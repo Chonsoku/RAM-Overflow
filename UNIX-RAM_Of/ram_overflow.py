@@ -7,7 +7,7 @@ rand_num = random.randint(1, 3)
 memory_hog = []
 os_name = platform.system()
 blocked_signals = False
-RESERVED_GB = 2.5       # Резервное ОЗУ
+RESERVED_GB = 2       # Резервное ОЗУ
 
 root = tk.Tk()
 root.withdraw()
